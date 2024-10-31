@@ -1,33 +1,67 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react';
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import Row from 'react-bootstrap/Row';
+import axios from 'axios';
+import { Link, useNavigate } from "react-router-dom";
+
 import './App.css'
+import { Col } from 'react-bootstrap';
+
 
 function App() {
-  const [count, setCount] = useState(0)
+ 
+  const [product, setProduct] =useState([])
+  useEffect(()=>{
+    axios.get('https://fakestoreapi.com/products')
+         .then((res)=>{
+         setProduct(res.data);
+        })
+        .catch((err)=>{
+          console.log(err);
+        })
 
+  })
+  
+  let navigate = useNavigate();
+  const routeChange=()=>{
+    navigate(`/poroduct/${poroduct_id}`)
+
+  }
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <Container>
+      <Row>
+
+        {product.map((product,index)=>{
+          return(
+            <>
+                  <Col>
+    <Card style={{ width: '18rem' }}>
+      <Card.Img variant="top" src={product.image} />
+      <Card.Body>
+        <Card.Title>{product.title}</Card.Title>
+        <Card.Text>
+        <p> $:{product.price}</p>
+          {product.description}
+         
+      
+        </Card.Text>
+         <Link to={`/product/${product.id}`}>
+        <Button variant="primary"> View Product</Button>
+        </Link>
+        <Button variant="info">Add to cart</Button>
+      </Card.Body>
+    </Card>
+    </Col>
+  
+            </>
+          )
+        })}
+  
+    </Row>
+    </Container>
     </>
   )
 }
