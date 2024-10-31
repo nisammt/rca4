@@ -49,7 +49,7 @@ function App() {
       
         </Card.Text>
          <Link to={`/product/${product.id}`}>
-        <Button variant="primary"> View Product</Button>
+        <Button variant="primary" className='btn'> View Product</Button>
         </Link>
         <Button variant="info">Add to cart</Button>
       </Card.Body>
